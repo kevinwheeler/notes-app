@@ -5,13 +5,12 @@ import { INestApplication } from '@nestjs/common';
 import { DataSource } from 'typeorm';
 import * as cookieParser from 'cookie-parser';
 
-import { usersFactory, ordersFactory, thingsFactory } from 'test/factories';
+import { usersFactory, ordersFactory } from 'test/factories';
 import { UsersService } from 'src/server/app/users/users.service';
 import { User } from 'src/server/app/users/user.entity';
 import { Order } from 'src/server/app/orders/order.entity';
 import { OrdersService } from 'src/server/app/orders/orders.service';
 import { JwtAuthService } from 'src/server/app/auth/jwt/jwt-auth.service';
-import { ThingsService } from 'src/server/app/things/things.service';
 import { login } from './utils';
 
 describe('Application', () => {
@@ -19,7 +18,6 @@ describe('Application', () => {
   let authService: JwtAuthService;
   let usersService: UsersService;
   let ordersService: OrdersService;
-  let thingsService: ThingsService;
   let dataSource: DataSource;
 
   beforeAll(async () => {
@@ -34,7 +32,6 @@ describe('Application', () => {
     usersService = app.get(UsersService);
     ordersService = app.get(OrdersService);
     authService = app.get(JwtAuthService);
-    thingsService = app.get(ThingsService);
     dataSource = app.get(DataSource);
   });
 
@@ -88,12 +85,8 @@ describe('Application', () => {
       describe('when authorized', () => {
         beforeEach(async () => {
           user = await usersService.create(usersFactory.build());
-          const thing = await thingsService.create(thingsFactory.build());
           order = await ordersService.create(
-            ordersFactory.build(
-              {},
-              { associations: { user: user, thing: thing } },
-            ),
+            ordersFactory.build({}, { associations: { user: user } }),
           );
         });
 

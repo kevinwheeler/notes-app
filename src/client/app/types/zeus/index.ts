@@ -22,15 +22,6 @@ export type ValueTypes = {
 	id?:boolean,
 	alias?:boolean,
 	user?:ValueTypes["User"],
-	thing?:ValueTypes["Thing"],
-	created_at?:boolean,
-	updated_at?:boolean,
-		__typename?: boolean
-}>;
-	["Thing"]: AliasType<{
-	id?:boolean,
-	name?:boolean,
-	orders?:ValueTypes["Order"],
 	created_at?:boolean,
 	updated_at?:boolean,
 		__typename?: boolean
@@ -38,12 +29,11 @@ export type ValueTypes = {
 	["Query"]: AliasType<{
 	users?:ValueTypes["User"],
 	whoAmI?:ValueTypes["User"],
-	things?:ValueTypes["Thing"],
 	orders?:ValueTypes["Order"],
 		__typename?: boolean
 }>;
 	["Mutation"]: AliasType<{
-createOrder?: [{	alias:string,	thingName:string},ValueTypes["Order"]],
+createOrder?: [{	alias:string},ValueTypes["Order"]],
 		__typename?: boolean
 }>
   }
@@ -65,21 +55,12 @@ export type ModelTypes = {
 		id:number,
 	alias:string,
 	user:ModelTypes["User"],
-	thing:ModelTypes["Thing"],
-	created_at:ModelTypes["DateTime"],
-	updated_at:ModelTypes["DateTime"]
-};
-	["Thing"]: {
-		id:number,
-	name:string,
-	orders?:ModelTypes["Order"][],
 	created_at:ModelTypes["DateTime"],
 	updated_at:ModelTypes["DateTime"]
 };
 	["Query"]: {
 		users:ModelTypes["User"][],
 	whoAmI:ModelTypes["User"],
-	things:ModelTypes["Thing"][],
 	orders:ModelTypes["Order"][]
 };
 	["Mutation"]: {
@@ -109,15 +90,6 @@ export type GraphQLTypes = {
 	id: number,
 	alias: string,
 	user: GraphQLTypes["User"],
-	thing: GraphQLTypes["Thing"],
-	created_at: GraphQLTypes["DateTime"],
-	updated_at: GraphQLTypes["DateTime"]
-};
-	["Thing"]: {
-	__typename: "Thing",
-	id: number,
-	name: string,
-	orders?: Array<GraphQLTypes["Order"]>,
 	created_at: GraphQLTypes["DateTime"],
 	updated_at: GraphQLTypes["DateTime"]
 };
@@ -125,7 +97,6 @@ export type GraphQLTypes = {
 	__typename: "Query",
 	users: Array<GraphQLTypes["User"]>,
 	whoAmI: GraphQLTypes["User"],
-	things: Array<GraphQLTypes["Thing"]>,
 	orders: Array<GraphQLTypes["Order"]>
 };
 	["Mutation"]: {

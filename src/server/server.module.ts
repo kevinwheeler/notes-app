@@ -4,6 +4,6 @@ import { AppModule } from 'src/server/app/app.module';
 import { ViewModule } from 'src/server/view/view.module';
 
 @Module({
-  imports: [AppModule, ViewModule],
+  imports: [ViewModule, AppModule],
 })
 export class ServerModule {}

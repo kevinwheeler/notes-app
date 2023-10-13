@@ -5,10 +5,7 @@ import { Request } from 'express';
 import { typedQuery } from '../app/apollo-client';
 
 export async function getServerSideProps({ req }) {
-  const { data } = await typedQuery(
-    { orders: { alias: true, thing: { name: true } } },
-    req,
-  );
+  const { data } = await typedQuery({ orders: { alias: true } }, req);
 
   return {
     props: { user: (req as Request).user, orders: data.orders },

@@ -5,16 +5,13 @@ import { UsersService } from '../users/users.service';
 import { OrdersModule } from './orders.module';
 import { OrdersResolver } from './orders.resolver';
 import { OrdersService } from './orders.service';
-import { usersFactory, thingsFactory, ordersFactory } from 'test/factories';
-import { ThingsModule } from '../things/things.module';
-import { ThingsService } from '../things/things.service';
+import { usersFactory, ordersFactory } from 'test/factories';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
 describe('OrdersResolver', () => {
   let resolver: OrdersResolver;
   let ordersService: OrdersService;
   let usersService: UsersService;
-  let thingsService: ThingsService;
   let moduleRef: TestingModule;
 
   beforeEach(async () => {
@@ -35,14 +32,12 @@ describe('OrdersResolver', () => {
         }),
         OrdersModule,
         UsersModule,
-        ThingsModule,
       ],
     }).compile();
 
     resolver = moduleRef.get<OrdersResolver>(OrdersResolver);
     ordersService = moduleRef.get<OrdersService>(OrdersService);
     usersService = moduleRef.get<UsersService>(UsersService);
-    thingsService = moduleRef.get<ThingsService>(ThingsService);
   });
 
   afterEach(async () => {
@@ -52,9 +47,8 @@ describe('OrdersResolver', () => {
   describe('orders', () => {
     it('returns orders of user', async () => {
       const user = await usersService.create(usersFactory.build());
-      const thing = await thingsService.create(thingsFactory.build());
       const order = await ordersService.create(
-        ordersFactory.build({}, { associations: { user: user, thing: thing } }),
+        ordersFactory.build({}, { associations: { user: user } }),
       );
 
       const result = await resolver.orders(user);
@@ -64,12 +58,8 @@ describe('OrdersResolver', () => {
 
     it('does not return orders of another user', async () => {
       const anotherUser = await usersService.create(usersFactory.build());
-      const thing = await thingsService.create(thingsFactory.build());
       await ordersService.create(
-        ordersFactory.build(
-          {},
-          { associations: { user: anotherUser, thing: thing } },
-        ),
+        ordersFactory.build({}, { associations: { user: anotherUser } }),
       );
 
       const user = await usersService.create(usersFactory.build());
@@ -82,20 +72,18 @@ describe('OrdersResolver', () => {
   describe('createOrder', () => {
     it('returns the order', async () => {
       const user = await usersService.create(usersFactory.build());
-      const thing = await thingsService.create(thingsFactory.build());
       const alias = ordersFactory.build().alias;
 
-      const result = await resolver.createOrder(user, thing.name, alias);
+      const result = await resolver.createOrder(user, alias);
 
       expect(result).toMatchObject({ alias: alias });
     });
 
     it('creates an order', async () => {
       const user = await usersService.create(usersFactory.build());
-      const thing = await thingsService.create(thingsFactory.build());
       const alias = ordersFactory.build().alias;
 
-      await resolver.createOrder(user, thing.name, alias);
+      await resolver.createOrder(user, alias);
 
       const orderCount = (
         await ordersService.findAll({ where: { user: { id: user.id } } })
@@ -105,11 +93,10 @@ describe('OrdersResolver', () => {
 
     it('does not create the same order twice', async () => {
       const user = await usersService.create(usersFactory.build());
-      const thing = await thingsService.create(thingsFactory.build());
       const alias = ordersFactory.build().alias;
 
-      await resolver.createOrder(user, thing.name, alias);
-      await resolver.createOrder(user, thing.name, alias);
+      await resolver.createOrder(user, alias);
+      await resolver.createOrder(user, alias);
 
       const orderCount = (
         await ordersService.findAll({ where: { user: { id: user.id } } })

@@ -1,11 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindManyOptions, FindOneOptions, Repository } from 'typeorm';
-import { ThingsService } from '../things/things.service';
-import {
-  CreateOrderDto,
-  CreateOrderFromThingDetailsDto,
-} from './dto/create-order.dto';
+import { CreateOrderDto } from './dto/create-order.dto';
 import { Order } from './order.entity';
 
 @Injectable()
@@ -13,7 +9,6 @@ export class OrdersService {
   constructor(
     @InjectRepository(Order)
     private ordersRepository: Repository<Order>,
-    @Inject(ThingsService) private thingsService: ThingsService,
   ) {}
 
   create(order: CreateOrderDto) {
@@ -22,13 +17,13 @@ export class OrdersService {
 
   findOne(params: FindOneOptions<Order> = {}) {
     return this.ordersRepository.findOne(
-      Object.assign({ relations: ['user', 'thing'] }, params),
+      Object.assign({ relations: ['user'] }, params),
     );
   }
 
   findAll(params: FindManyOptions<Order> = {}) {
     return this.ordersRepository.find(
-      Object.assign({ relations: ['user', 'thing'] }, params),
+      Object.assign({ relations: ['user'] }, params),
     );
   }
 
@@ -41,24 +36,9 @@ export class OrdersService {
       order = await this.create({
         alias: conditions.alias,
         user: conditions.user,
-        thing: conditions.thing,
       });
     }
 
     return order;
-  }
-
-  async createFromThingDetails(params: CreateOrderFromThingDetailsDto) {
-    const thing = await this.thingsService.findOne({
-      where: { name: params.thingName },
-    });
-
-    return this.findOrCreateOne({
-      where: {
-        user: { id: params.user.id },
-        alias: params.alias,
-        thing: { id: thing.id },
-      },
-    });
   }
 }

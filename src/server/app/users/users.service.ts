@@ -21,6 +21,12 @@ export class UsersService {
   }
 
   findAll(params: FindManyOptions<User> = {}) {
-    return this.usersRepository.find(params);
+    return this.usersRepository.find(
+      Object.assign({ relations: ['orders'] }, params),
+    );
   }
+
+  // findAll(params: FindManyOptions<User> = {}) {
+  //   return this.usersRepository.find(params);
+  // }
 }

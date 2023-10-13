@@ -11,7 +11,6 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
-import { ThingsModule } from './things/things.module';
 import { OrdersModule } from './orders/orders.module';
 
 @Module({
@@ -39,7 +38,6 @@ import { OrdersModule } from './orders/orders.module';
     ConsoleModule,
     AuthModule,
     UsersModule,
-    ThingsModule,
     OrdersModule,
   ],
   providers: [SeedService, AppService],
