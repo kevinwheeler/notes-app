@@ -5,11 +5,11 @@ import { INestApplication } from '@nestjs/common';
 import { DataSource } from 'typeorm';
 import * as cookieParser from 'cookie-parser';
 
-import { usersFactory, ordersFactory } from 'test/factories';
+import { usersFactory, notesFactory } from 'test/factories';
 import { UsersService } from 'src/server/app/users/users.service';
 import { User } from 'src/server/app/users/user.entity';
-import { Order } from 'src/server/app/orders/order.entity';
-import { OrdersService } from 'src/server/app/orders/orders.service';
+import { Note } from 'src/server/app/notes/note.entity';
+import { NotesService } from 'src/server/app/notes/notes.service';
 import { JwtAuthService } from 'src/server/app/auth/jwt/jwt-auth.service';
 import { login } from './utils';
 
@@ -17,7 +17,7 @@ describe('Application', () => {
   let app: INestApplication;
   let authService: JwtAuthService;
   let usersService: UsersService;
-  let ordersService: OrdersService;
+  let notesService: NotesService;
   let dataSource: DataSource;
 
   beforeAll(async () => {
@@ -30,7 +30,7 @@ describe('Application', () => {
     await app.init();
 
     usersService = app.get(UsersService);
-    ordersService = app.get(OrdersService);
+    notesService = app.get(NotesService);
     authService = app.get(JwtAuthService);
     dataSource = app.get(DataSource);
   });
@@ -67,10 +67,10 @@ describe('Application', () => {
       });
     });
 
-    describe('orders', () => {
-      const query = '{ orders { id alias } }';
+    describe('notes', () => {
+      const query = '{ notes { id alias } }';
       let user: User;
-      let order: Order;
+      let note: Note;
 
       it('returns unauthorized', () => {
         return agent
@@ -85,18 +85,18 @@ describe('Application', () => {
       describe('when authorized', () => {
         beforeEach(async () => {
           user = await usersService.create(usersFactory.build());
-          order = await ordersService.create(
-            ordersFactory.build({}, { associations: { user: user } }),
+          note = await notesService.create(
+            notesFactory.build({}, { associations: { user: user } }),
           );
         });
 
-        it('returns orders', () => {
+        it('returns notes', () => {
           return login(agent, user, authService)
             .send({ query: query })
             .expect(200)
             .expect((res) => {
-              expect(res.body.data.orders).toHaveLength(1);
-              expect(res.body.data.orders[0].id).toEqual(order.id);
+              expect(res.body.data.notes).toHaveLength(1);
+              expect(res.body.data.notes[0].id).toEqual(note.id);
             });
         });
       });

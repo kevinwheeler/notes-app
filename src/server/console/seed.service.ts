@@ -1,4 +1,3 @@
-import { Inject } from '@nestjs/common';
 import { Console, Command, createSpinner } from 'nestjs-console';
 
 @Console()
@@ -20,7 +19,7 @@ export class SeedService {
   }
 
   // async seedThings() {
-  //   const things = [{ name: 'this is a thing you can order' }];
+  //   const things = [{ name: 'this is a thing you can note' }];
 
   //   for (const thingParams of things) {
   //     const thing = await this.thingsService.findOne({

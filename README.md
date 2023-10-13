@@ -79,7 +79,7 @@ query Private {
     name
   }
 
-  orders {
+  notes {
     id
 
     alias

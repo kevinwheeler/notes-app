@@ -1,6 +1,6 @@
 import { User } from '../../users/user.entity';
 
-export class CreateOrderDto {
+export class CreateNoteDto {
   alias: string;
   user: User;
 }

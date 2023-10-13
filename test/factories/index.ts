@@ -1,4 +1,4 @@
 import usersFactory from 'test/factories/user';
-import ordersFactory from 'test/factories/order';
+import notesFactory from 'test/factories/note';
 
-export { usersFactory, ordersFactory };
+export { usersFactory, notesFactory };

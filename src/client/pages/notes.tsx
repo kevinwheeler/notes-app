@@ -5,26 +5,26 @@ import { Request } from 'express';
 import { typedQuery } from '../app/apollo-client';
 
 export async function getServerSideProps({ req }) {
-  const { data } = await typedQuery({ orders: { alias: true } }, req);
+  const { data } = await typedQuery({ notes: { alias: true } }, req);
 
   return {
-    props: { user: (req as Request).user, orders: data.orders },
+    props: { user: (req as Request).user, notes: data.notes },
   };
 }
 
 type Props = ExtractPromiseType<ReturnType<typeof getServerSideProps>>;
 
-const Orders: NextPage<Props['props']> = (props) => {
+const Notes: NextPage<Props['props']> = (props) => {
   useEffect(() => {
-    window.gtag('event', 'ordersOpened');
+    window.gtag('event', 'notesOpened');
   }, []);
 
   return (
     <div>
-      <h1>Orders overview</h1>
+      <h1>Notes overview</h1>
       {JSON.stringify(props)}
     </div>
   );
 };
 
-export default Orders;
+export default Notes;

@@ -11,7 +11,7 @@ import { User } from '../users/user.entity';
 
 @ObjectType()
 @Entity()
-export class Order {
+export class Note {
   @Field()
   @PrimaryGeneratedColumn()
   id: number;
@@ -21,7 +21,7 @@ export class Order {
   alias: string;
 
   @Field((_type) => User)
-  @ManyToOne((_type) => User, (user) => user.orders, { nullable: false })
+  @ManyToOne((_type) => User, (user) => user.notes, { nullable: false })
   user: User;
 
   @Field()

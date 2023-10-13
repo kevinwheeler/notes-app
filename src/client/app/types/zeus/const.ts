@@ -3,7 +3,7 @@
 export const AllTypesProps: Record<string,any> = {
 	DateTime: "String",
 	Mutation:{
-		createOrder:{
+		createNote:{
 			alias:{
 				type:"String",
 				array:false,
@@ -21,11 +21,11 @@ export const ReturnTypes: Record<string,any> = {
 		providerId:"String",
 		username:"String",
 		name:"String",
-		orders:"Order",
+		notes:"Note",
 		created_at:"DateTime",
 		updated_at:"DateTime"
 	},
-	Order:{
+	Note:{
 		id:"Float",
 		alias:"String",
 		user:"User",
@@ -35,9 +35,9 @@ export const ReturnTypes: Record<string,any> = {
 	Query:{
 		users:"User",
 		whoAmI:"User",
-		orders:"Order"
+		notes:"Note"
 	},
 	Mutation:{
-		createOrder:"Order"
+		createNote:"Note"
 	}
 }

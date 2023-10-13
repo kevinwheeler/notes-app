@@ -11,14 +11,14 @@ export type ValueTypes = {
 	providerId?:boolean,
 	username?:boolean,
 	name?:boolean,
-	orders?:ValueTypes["Order"],
+	notes?:ValueTypes["Note"],
 	created_at?:boolean,
 	updated_at?:boolean,
 		__typename?: boolean
 }>;
 	/** A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format. */
 ["DateTime"]:unknown;
-	["Order"]: AliasType<{
+	["Note"]: AliasType<{
 	id?:boolean,
 	alias?:boolean,
 	user?:ValueTypes["User"],
@@ -29,11 +29,11 @@ export type ValueTypes = {
 	["Query"]: AliasType<{
 	users?:ValueTypes["User"],
 	whoAmI?:ValueTypes["User"],
-	orders?:ValueTypes["Order"],
+	notes?:ValueTypes["Note"],
 		__typename?: boolean
 }>;
 	["Mutation"]: AliasType<{
-createOrder?: [{	alias:string},ValueTypes["Order"]],
+createNote?: [{	alias:string},ValueTypes["Note"]],
 		__typename?: boolean
 }>
   }
@@ -45,13 +45,13 @@ export type ModelTypes = {
 	providerId:string,
 	username:string,
 	name:string,
-	orders?:ModelTypes["Order"][],
+	notes?:ModelTypes["Note"][],
 	created_at:ModelTypes["DateTime"],
 	updated_at:ModelTypes["DateTime"]
 };
 	/** A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format. */
 ["DateTime"]:any;
-	["Order"]: {
+	["Note"]: {
 		id:number,
 	alias:string,
 	user:ModelTypes["User"],
@@ -61,10 +61,10 @@ export type ModelTypes = {
 	["Query"]: {
 		users:ModelTypes["User"][],
 	whoAmI:ModelTypes["User"],
-	orders:ModelTypes["Order"][]
+	notes:ModelTypes["Note"][]
 };
 	["Mutation"]: {
-		createOrder:ModelTypes["Order"]
+		createNote:ModelTypes["Note"]
 }
     }
 
@@ -79,14 +79,14 @@ export type GraphQLTypes = {
 	providerId: string,
 	username: string,
 	name: string,
-	orders?: Array<GraphQLTypes["Order"]>,
+	notes?: Array<GraphQLTypes["Note"]>,
 	created_at: GraphQLTypes["DateTime"],
 	updated_at: GraphQLTypes["DateTime"]
 };
 	/** A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format. */
 ["DateTime"]:any;
-	["Order"]: {
-	__typename: "Order",
+	["Note"]: {
+	__typename: "Note",
 	id: number,
 	alias: string,
 	user: GraphQLTypes["User"],
@@ -97,11 +97,11 @@ export type GraphQLTypes = {
 	__typename: "Query",
 	users: Array<GraphQLTypes["User"]>,
 	whoAmI: GraphQLTypes["User"],
-	orders: Array<GraphQLTypes["Order"]>
+	notes: Array<GraphQLTypes["Note"]>
 };
 	["Mutation"]: {
 	__typename: "Mutation",
-	createOrder: GraphQLTypes["Order"]
+	createNote: GraphQLTypes["Note"]
 }
     }
 
