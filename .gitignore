@@ -396,11 +396,9 @@ Temporary Items
 # Local
 .env
 .env.prod
-dist
-
-notes.md
-
 .next
-
 cypress/videos
 cypress/screenshots
+dist
+db-certificate.pem
+notes.md

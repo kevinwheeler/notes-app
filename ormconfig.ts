@@ -1,5 +1,6 @@
 import { DataSource } from 'typeorm';
 import * as dotenv from 'dotenv';
+import { readFileSync } from 'fs';
 
 dotenv.config();
 
@@ -11,8 +12,12 @@ const source = new DataSource({
   extra: {
     ssl:
       process.env.NODE_ENV === 'production'
-        ? { rejectUnauthorized: false }
+        ? {
+            rejectUnauthorized: true,
+            ca: readFileSync('/app/db-certificate.pem').toString(),
+          }
         : false,
+    sslmode: 'require',
   },
 });
 

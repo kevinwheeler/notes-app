@@ -1,8 +1,5 @@
 FROM node:18.10.0-alpine
 
-# curl needed to display Heroku release logs
-RUN apk --no-cache add curl
-
 WORKDIR /app
 
 COPY package.json yarn.lock ./
@@ -11,6 +8,12 @@ RUN yarn install
 COPY . /app
 COPY .env.prod /app/.env
 
+ENV NODE_ENV=production
 RUN yarn build
 
-CMD yarn start:prod
+#TODO: It would be good to not include source files, etc after building.
+
+# The EXPOSE directive doesn't actually do anything and just serves as documentation. https://stackoverflow.com/a/47594352/3470632
+# Need to publish the ports when running the docker container.
+EXPOSE 80 443
+ENTRYPOINT ["scripts/web-docker-entrypoint-prod.sh"]
