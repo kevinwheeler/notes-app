@@ -32,10 +32,14 @@ export class NotesService {
 
     note = await this.findOne(params);
     if (!note) {
-      const conditions = params.where as CreateNoteDto;
+      const conditions = params.where as unknown as CreateNoteDto;
       note = await this.create({
-        alias: conditions.alias,
+        title: conditions.title,
+        content: conditions.content,
+        tags: conditions.tags,
         user: conditions.user,
+        // alias: conditions.alias,
+        // user: conditions.user,
       });
     }
 

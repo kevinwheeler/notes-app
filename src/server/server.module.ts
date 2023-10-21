@@ -1,17 +1,17 @@
 import { Module } from '@nestjs/common';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
-import { ThrottlerGuard } from '@nestjs/throttler';
 
 import { AppModule } from 'src/server/app/app.module';
 import { ViewModule } from 'src/server/view/view.module';
+import { GqlThrottlerGuard } from './app/guards/gql-throttler-guard';
 
 @Module({
   imports: [
     ThrottlerModule.forRoot([
       {
-        ttl: 60000,
-        limit: 1000,
+        ttl: 60000, // TODO extract this to config/constants or env var or wherever.
+        limit: 1000, // TODO extract this to config/constants or env var or wherever.
       },
     ]),
     ViewModule,
@@ -20,7 +20,7 @@ import { ViewModule } from 'src/server/view/view.module';
   providers: [
     {
       provide: APP_GUARD,
-      useClass: ThrottlerGuard,
+      useClass: GqlThrottlerGuard,
     },
   ],
 })

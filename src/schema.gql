@@ -4,7 +4,9 @@
 
 type Note {
   id: Float!
-  alias: String!
+  title: String!
+  content: String!
+  tags: [String!]
   user: User!
   created_at: DateTime!
   updated_at: DateTime!
@@ -33,5 +35,5 @@ type Query {
 }
 
 type Mutation {
-  createNote(alias: String!): Note!
+  createNote(title: String!, content: String!, tags: [String!]!): Note!
 }

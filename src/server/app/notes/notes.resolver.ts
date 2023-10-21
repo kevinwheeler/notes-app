@@ -1,11 +1,34 @@
 import { Inject, UseGuards } from '@nestjs/common';
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import {
+  Args,
+  ArgsType,
+  Field,
+  Mutation,
+  Query,
+  Resolver,
+} from '@nestjs/graphql';
 import { CurrentUser } from '../auth/graphql/gql-auth.decorator';
 import { GqlAuthGuard } from '../auth/graphql/gql-auth.guard';
 import { User } from '../users/user.entity';
 import { Note } from './note.entity';
 import { NotesService } from './notes.service';
+import { TagLengthIsValid } from './tagLength.decorator';
+import { ArrayMaxSize } from 'class-validator';
 
+@ArgsType()
+class CreateNoteArgs {
+  @Field()
+  title: string;
+
+  @Field()
+  content: string;
+
+  @TagLengthIsValid()
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  @Field((type) => [String])
+  @ArrayMaxSize(30)
+  tags: string[];
+}
 @Resolver((_of) => Note)
 export class NotesResolver {
   constructor(@Inject(NotesService) private notesService: NotesService) {}
@@ -20,12 +43,12 @@ export class NotesResolver {
   @UseGuards(GqlAuthGuard)
   createNote(
     @CurrentUser() user: User,
-    @Args({ name: 'alias', type: () => String }) alias: string,
+    @Args() createNoteArgs: CreateNoteArgs,
   ) {
-    console.log('in resolver');
-    console.log('user = ', user);
     return this.notesService.create({
-      alias: alias,
+      title: createNoteArgs.title,
+      content: createNoteArgs.content,
+      tags: createNoteArgs.tags,
       user: user,
     });
   }

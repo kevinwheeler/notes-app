@@ -5,8 +5,18 @@ export class AddNotes1620037951321 implements MigrationInterface {
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
-      `CREATE TABLE "note" ("id" SERIAL NOT NULL, "alias" character varying NOT NULL, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "userId" integer, CONSTRAINT "PK_1031171c13130102495201e3e20" PRIMARY KEY ("id"))`,
+      `CREATE TABLE "note" (
+        "id" SERIAL NOT NULL,
+        "title" CHARACTER VARYING(100) NOT NULL CHECK (LENGTH(title) >= 1),
+        "content" CHARACTER VARYING(300) NOT NULL CHECK (LENGTH(content) >= 20),
+        "tags" CHARACTER VARYING(50)[] NOT NULL CHECK (cardinality(tags) <= 30),
+        "created_at" TIMESTAMP NOT NULL DEFAULT now(),
+        "updated_at" TIMESTAMP NOT NULL DEFAULT now(),
+        "userId" integer,
+        CONSTRAINT "PK_1031171c13130102495201e3e20" PRIMARY KEY ("id")
+        )`,
     );
+
     await queryRunner.query(
       `ALTER TABLE "note" ADD CONSTRAINT "FK_caabe91507b3379c7ba73637b84" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
     );
