@@ -24,6 +24,7 @@
     "next.config.js",
     "app",
     "pages",
+    "components",
     "../server/common"
   ],
   "exclude": [

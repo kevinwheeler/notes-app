@@ -2,6 +2,8 @@ import React from 'react';
 import { AppProps } from 'next/app';
 import Script from 'next/script';
 import '../styles/globals.scss';
+import 'line-awesome/dist/line-awesome/css/line-awesome.min.css';
+import 'remixicon/fonts/remixicon.css';
 
 const App = ({ Component, pageProps }: AppProps) => {
   return (
