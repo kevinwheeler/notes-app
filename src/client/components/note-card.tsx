@@ -14,9 +14,24 @@ export function NoteCard({ note }: NoteCardProps) {
           className="border-red-500 rounded-lg"
           pathClasses="text-red-500"
         />
-        <div>
+        <div className="relative">
           <i className="las la-thumbtack text-2xl mr-2 cursor-pointer"></i>
           <i className="ri-more-fill text-2xl cursor-pointer"></i>
+          {/* view, edit, delete box */}
+          <ul className="absolute shadow-lg shadow-black/50 rounded-lg justify-center flex flex-col w-36 right-0 bg-white">
+            <li className="p-2">
+              <i className="las la-eye mr-3" />
+              View
+            </li>
+            <li className="p-2">
+              <i className="las la-pen mr-3" />
+              Edit
+            </li>
+            <li className="p-2">
+              <i className="las la-trash-alt mr-3" />
+              Delete
+            </li>
+          </ul>
         </div>
       </div>
       <div className="mt-2 text-2xl text-black">{note.title}</div>
