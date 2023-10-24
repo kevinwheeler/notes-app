@@ -394,6 +394,7 @@ Temporary Items
 
 =======
 # Local
+*.bak
 *.swp
 .env
 .env.prod

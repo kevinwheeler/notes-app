@@ -2,11 +2,33 @@ import React from 'react';
 import { NoteCard } from './note-card';
 import Note from '../app/types/note';
 
-export interface NotesGridProps {
+interface NotesGridProps {
   notes: Note[];
 }
 
 export function NoteGrid(props: NotesGridProps) {
+  const colors = [
+    'blue-500',
+    'teal-500',
+    'yellow-500',
+    'purple-500',
+    'green-500',
+    'pink-500',
+  ];
+  // This is just to include all of the classes so that Tailwind JIT will include them
+  // in the final CSS bundle. It isn't actually unused like it seems.
+  const colorClasses = [
+    'after:bg-blue-500 text-blue-500 border-blue-500',
+    'after:bg-teal-500 text-teal-500 border-teal-500',
+    'after:bg-yellow-500 text-yellow-500 border-yellow-500',
+    'after:bg-purple-500 text-purple-500 border-purple-500',
+    'after:bg-green-500 text-green-500 border-green-500',
+    'after:bg-pink-500 text-pink-500 border-pink-500',
+  ];
+
+  // Shuffle the colors array to get a randomized order
+  const shuffledColors = colors.sort(() => Math.random() - 0.5);
+
   return (
     <div className="bg-gray-50 mx-8 my-4 min-h-[5rem] p-6 flex flex-col rounded-lg">
       <div className="flex justify-between">
@@ -22,8 +44,12 @@ export function NoteGrid(props: NotesGridProps) {
         </div>
       </div>
       <div className="flex gap-4 mt-8 text-gray-500">
-        {props.notes.map((note) => (
-          <NoteCard key={note.id} note={note} />
+        {props.notes.map((note, index) => (
+          <NoteCard
+            key={note.id}
+            note={note}
+            color={shuffledColors[index % shuffledColors.length]}
+          />
         ))}
       </div>
     </div>
