@@ -45,4 +45,9 @@ export class NotesService {
 
     return note;
   }
+
+  async updateOne(id: number, note: Partial<Note>): Promise<Note> {
+    await this.notesRepository.update(id, note);
+    return this.findOne({ where: { id } });
+  }
 }

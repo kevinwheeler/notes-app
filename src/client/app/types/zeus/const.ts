@@ -5,6 +5,9 @@ export const AllTypesProps: Record<string,any> = {
 	Mutation:{
 		createNote:{
 
+		},
+		updateNote:{
+
 		}
 	}
 }
@@ -36,7 +39,8 @@ export const ReturnTypes: Record<string,any> = {
 		notes:"Note"
 	},
 	Mutation:{
-		createNote:"Note"
+		createNote:"Note",
+		updateNote:"Note"
 	}
 }
 

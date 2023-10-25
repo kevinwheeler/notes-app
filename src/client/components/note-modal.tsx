@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
+import { Chain, Zeus } from '../app/types/zeus/index';
+import { useTypedMutation } from '../app/types/zeus/apollo.ts';
 
 export const NoteModal = ({ isOpen, onRequestClose, note, mode }) => {
-  const [title, setTitle] = useState(note?.title || '');
-  const [content, setContent] = useState(note?.content || '');
+  const [title, setTitle] = useState(note.title || '');
+  const [content, setContent] = useState(note.content || '');
   const [isLoading, setIsLoading] = useState(false);
 
   Modal.setAppElement('#__next');
@@ -11,16 +13,24 @@ export const NoteModal = ({ isOpen, onRequestClose, note, mode }) => {
   const handleSave = async () => {
     setIsLoading(true);
     try {
-      // Let's assume you have a function called saveNote which communicates with your API.
-      // const result = await saveNote(note?.id, title, content); // this function should handle both create and update based on if note?.id exists
-      console.log(
-        'saving. id: ',
-        note?.id,
-        'title: ',
-        title,
-        'content: ',
-        content,
-      );
+      const chain = Chain('/graphql');
+      const { updatedNote } = await chain('mutation')({
+        updateNote: [
+          {
+            id: note.id,
+            title: title,
+            content: content,
+          },
+          {
+            id: true,
+            title: true,
+            content: true,
+            tags: true,
+            updated_at: true,
+            created_at: true,
+          },
+        ],
+      });
       if (mode === 'create') {
         onRequestClose();
       }
@@ -29,7 +39,7 @@ export const NoteModal = ({ isOpen, onRequestClose, note, mode }) => {
       console.log('toast success');
     } catch (error) {
       // displayToast(error.message || 'Error saving the note.', 'error');
-      console.log('toast error');
+      console.log('toast error', error);
     } finally {
       setIsLoading(false);
     }
@@ -39,17 +49,10 @@ export const NoteModal = ({ isOpen, onRequestClose, note, mode }) => {
     <Modal
       isOpen={isOpen}
       onRequestClose={onRequestClose}
-      className="bg-white rounded-lg w-screen md:max-w-md"
+      className="bg-white dark:bg-gray-700 rounded-lg w-screen md:max-w-md"
       overlayClassName="fixed flex justify-center items-center p-4 inset-0 z-[1000] bg-gray-700/50"
     >
-      {/* <div
-        id="note-modal"
-        className={`fixed top-0 left-0 right-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full ${
-          isOpen ? '' : 'hidden'
-        }`}
-      >*/}
-      {/* <div className="relative w-full max-w-md max-h-full">
-        <div className="relative bg-white rounded-lg shadow dark:bg-gray-700"> */}
+      <div className="relative bg-white rounded-lg shadow dark:bg-gray-700"> */}
       <div className="px-6 py-6 lg:px-8">
         <div className="flex justify-between">
           <h3 className="mb-4 text-xl font-medium text-gray-900 dark:text-white">

@@ -54,7 +54,7 @@ export function NoteCard({ note, color }: NoteCardProps) {
 
   return (
     <>
-      <div className="flex flex-col flex-1 p-5 gap-2 bg-white rounded-xl font-roboto relative">
+      <div className="flex flex-col flex-1 p-5 gap-2 bg-white dark:bg-black dark:shadow-lg dark:shadow-white/50 rounded-xl font-roboto relative">
         <div className="flex justify-between items-center">
           <NoteIcon
             className={`border-${color} rounded-lg`}
@@ -67,7 +67,7 @@ export function NoteCard({ note, color }: NoteCardProps) {
             ></i>
             {/* view, edit, delete box */}
             {isContextMenuVisible && (
-              <ul className="absolute shadow-lg shadow-black/50 rounded-lg justify-center flex flex-col w-36 right-0 bg-white p-2">
+              <ul className="absolute shadow-lg shadow-black/50 dark:shadow-white/50 rounded-lg justify-center flex flex-col w-36 right-0 bg-white dark:bg-black p-2">
                 <li className="cursor-pointer">
                   <i className="las la-eye mr-3" />
                   View
@@ -97,10 +97,12 @@ export function NoteCard({ note, color }: NoteCardProps) {
             )}
           </div>
         </div>
-        <div className="mt-2 text-2xl text-black">{note.title}</div>
+        <div className="mt-2 text-2xl text-black dark:text-white">
+          {note.title}
+        </div>
         <p className="text-gray-500  tracking-wide">{note.content}</p>
         <div className="mt-6 flex justify-end">
-          <div className="text-black">
+          <div className="text-black dark:text-white">
             <i className={`las la-calendar mr-2 text-2xl text-${color}`}></i>
             <span className="align-top">
               {new Date(note.created_at).toLocaleDateString()}
@@ -109,7 +111,7 @@ export function NoteCard({ note, color }: NoteCardProps) {
         </div>
         {/* If we have time, we'll animate this sliding and fading out when we highlight the note upon hover. This is why we didn't just use a simple bottom border */}
         <div
-          className={`after:absolute after:w-full after:h-1 after:bottom-0 after:border after:bg-${color} after:rounded-lg after:overflow-hidden after:-ml-5`}
+          className={`after:absolute after:w-full after:h-1 after:bottom-0 after:bg-${color} after:rounded-lg after:overflow-hidden after:-ml-5`}
         ></div>
       </div>
       <NoteModal

@@ -19,6 +19,8 @@ export async function getServerSideProps({ req }) {
       },
     },
     req,
+    undefined,
+    { fetchPolicy: 'network-only' }, //prevent caching
   );
 
   return {
@@ -34,10 +36,10 @@ const Notes: NextPage<Props['props']> = (props) => {
   }, []);
 
   return (
-    <main className="flex flex-col min-h-screen bg-gray-200 overflow-x-hidden antialiased">
+    <main className="flex flex-col min-h-screen bg-gray-200 dark:bg-gray-800 overflow-x-hidden antialiased">
       <Navbar />
-      <div className="bg-gray-50 mx-8 my-4 mt-24 min-h-[5rem] flex items-center rounded-lg">
-        <div className="ml-5 text-gray-500 hover:text-black cursor-pointer">
+      <div className="bg-gray-50 dark:bg-gray-900 mx-8 my-4 mt-24 min-h-[5rem] flex items-center rounded-lg">
+        <div className="ml-5 text-gray-500 hover:text-black dark:text-gray-300 dark:hover:text-white cursor-pointer">
           <i className="las la-pencil-alt pr-2"></i>
           <span className="ml-2">Write Your Note</span>
         </div>

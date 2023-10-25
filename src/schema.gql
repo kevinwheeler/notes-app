@@ -36,4 +36,5 @@ type Query {
 
 type Mutation {
   createNote(title: String!, content: String!, tags: [String!]!): Note!
+  updateNote(id: Float!, title: String, content: String, tags: [String!]): Note!
 }
