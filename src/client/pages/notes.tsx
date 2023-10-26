@@ -6,27 +6,33 @@ import { typedQuery } from '../app/apollo-client';
 import Navbar from '../components/navbar';
 import { NoteGrid } from '../components/notes-grid';
 import Note from '../app/types/note';
+import { setNotes } from '../store/notes-slice';
+import { wrapper } from '../store';
 
-export async function getServerSideProps({ req }) {
-  const { data } = await typedQuery(
-    {
-      notes: {
-        id: true,
-        title: true,
-        content: true,
-        tags: true,
-        created_at: true,
-      },
+export const getServerSideProps = wrapper.getServerSideProps(
+  (store) =>
+    async ({ req }) => {
+      const { data } = await typedQuery(
+        {
+          notes: {
+            id: true,
+            title: true,
+            content: true,
+            tags: true,
+            created_at: true,
+          },
+        },
+        req,
+        undefined,
+        { fetchPolicy: 'network-only' }, //prevent caching
+      );
+      store.dispatch(setNotes(data.notes));
+
+      return {
+        props: { user: (req as Request).user, notes: data.notes as Note[] },
+      };
     },
-    req,
-    undefined,
-    { fetchPolicy: 'network-only' }, //prevent caching
-  );
-
-  return {
-    props: { user: (req as Request).user, notes: data.notes as Note[] },
-  };
-}
+);
 
 type Props = ExtractPromiseType<ReturnType<typeof getServerSideProps>>;
 

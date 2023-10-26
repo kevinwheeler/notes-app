@@ -4,8 +4,11 @@ import Script from 'next/script';
 import '../styles/globals.scss';
 import 'line-awesome/dist/line-awesome/css/line-awesome.min.css';
 import 'remixicon/fonts/remixicon.css';
+import { Provider } from 'react-redux';
+import { wrapper } from '../store';
 
-const App = ({ Component, pageProps }: AppProps) => {
+const App = ({ Component, ...rest }: AppProps) => {
+  const { store, props } = wrapper.useWrappedStore(rest);
   return (
     <>
       <Script
@@ -21,8 +24,9 @@ const App = ({ Component, pageProps }: AppProps) => {
               gtag('config', '${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}');
             `}
       </Script>
-
-      <Component {...pageProps} />
+      <Provider store={store}>
+        <Component {...props.pageProps} />
+      </Provider>
     </>
   );
 };

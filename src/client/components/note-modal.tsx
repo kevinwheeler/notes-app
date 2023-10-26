@@ -52,7 +52,6 @@ export const NoteModal = ({ isOpen, onRequestClose, note, mode }) => {
       className="bg-white dark:bg-gray-700 rounded-lg w-screen md:max-w-md"
       overlayClassName="fixed flex justify-center items-center p-4 inset-0 z-[1000] bg-gray-700/50"
     >
-      <div className="relative bg-white rounded-lg shadow dark:bg-gray-700"> */}
       <div className="px-6 py-6 lg:px-8">
         <div className="flex justify-between">
           <h3 className="mb-4 text-xl font-medium text-gray-900 dark:text-white">

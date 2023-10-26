@@ -18,7 +18,7 @@ export function NoteCard({ note, color }: NoteCardProps) {
     setIsContextMenuVisible(false); // Hide the context menu
   };
 
-  // This is a placeholder function. You'd need to integrate this with whatever toast library you're using.
+  // This is a placeholder function.
   const displayToast = (message, type) => {
     console.log(`${type.toUpperCase()}: ${message}`);
   };

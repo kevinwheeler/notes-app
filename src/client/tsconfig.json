@@ -20,11 +20,12 @@
     "incremental": true
   },
   "include": [
+    "app",
+    "components",
     "next-env.d.ts",
     "next.config.js",
-    "app",
     "pages",
-    "components",
+    "store",
     "../server/common"
   ],
   "exclude": [
