@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
-import { Chain, Zeus } from '../app/types/zeus/index';
-import { useTypedMutation } from '../app/types/zeus/apollo.ts';
+import { Chain } from '../app/types/zeus/index';
 
 export const NoteModal = ({ isOpen, onRequestClose, note, mode }) => {
   const [title, setTitle] = useState(note.title || '');
@@ -126,9 +125,6 @@ export const NoteModal = ({ isOpen, onRequestClose, note, mode }) => {
           )}
         </div>
       </div>
-      {/* </div>
-      </div> */}
-      {/* </div> */}
     </Modal>
   );
 };

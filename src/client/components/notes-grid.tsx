@@ -1,14 +1,10 @@
 import React from 'react';
 import { NoteCard } from './note-card';
-import Note from '../app/types/note';
 import { useSelector } from 'react-redux';
+import { Note } from '../app/types/note';
 
-interface NotesGridProps {
-  notes: Note[];
-}
-
-export function NoteGrid(props: NotesGridProps) {
-  const notes = useSelector((state: RootState) => {
+export function NoteGrid() {
+  const notes: [Note] = useSelector((state: RootState) => {
     return state.notes;
   });
   const colors = [
@@ -50,10 +46,10 @@ export function NoteGrid(props: NotesGridProps) {
         </div>
       </div>
       <div className="flex gap-4 mt-8 text-gray-500">
-        {notes.map((note, index) => (
+        {Object.values(notes).map((note, index) => (
           <NoteCard
             key={note.id}
-            note={note}
+            noteId={note.id}
             color={shuffledColors[index % shuffledColors.length]}
           />
         ))}

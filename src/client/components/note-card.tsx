@@ -2,16 +2,18 @@ import React, { useState, useEffect, useRef } from 'react';
 import { NoteIcon } from './SVGs';
 import Note from '../app/types/note';
 import { NoteModal } from './note-modal';
+import { useSelector } from 'react-redux';
 
 interface NoteCardProps {
-  note: Note;
+  noteId: number;
   color: string;
 }
 
-export function NoteCard({ note, color }: NoteCardProps) {
+export function NoteCard({ noteId, color }: NoteCardProps) {
   const [isContextMenuVisible, setIsContextMenuVisible] = useState(false);
   const contextMenuRef = useRef(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const note: Note = useSelector((state: ReduxState) => state.notes[noteId]);
 
   const openEditModal = () => {
     setIsModalOpen(true);

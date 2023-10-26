@@ -26,10 +26,18 @@ export const getServerSideProps = wrapper.getServerSideProps(
         undefined,
         { fetchPolicy: 'network-only' }, //prevent caching
       );
-      store.dispatch(setNotes(data.notes));
+
+      // convert from array to object, so we can access each note by id.
+      const notesObject = data.notes.reduce((acc, note) => {
+        acc[note.id] = note;
+        return acc;
+      }, {});
+
+      store.dispatch(setNotes(notesObject));
 
       return {
-        props: { user: (req as Request).user, notes: data.notes as Note[] },
+        //TODO perhaps save user in a store instead
+        props: { user: (req as Request).user },
       };
     },
 );
@@ -51,7 +59,7 @@ const Notes: NextPage<Props['props']> = (props) => {
         </div>
       </div>
 
-      <NoteGrid notes={props.notes} />
+      <NoteGrid />
     </main>
   );
 };
