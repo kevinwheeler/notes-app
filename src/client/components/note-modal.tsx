@@ -1,11 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Modal from 'react-modal';
 import { Chain } from '../app/types/zeus/index';
+import { useDispatch } from 'react-redux';
+import { editNote } from '../store/notes-slice';
 
 export const NoteModal = ({ isOpen, onRequestClose, note, mode }) => {
   const [title, setTitle] = useState(note.title || '');
   const [content, setContent] = useState(note.content || '');
   const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useDispatch();
 
   Modal.setAppElement('#__next');
 
@@ -13,29 +16,37 @@ export const NoteModal = ({ isOpen, onRequestClose, note, mode }) => {
     setIsLoading(true);
     try {
       const chain = Chain('/graphql');
-      const { updatedNote } = await chain('mutation')({
-        updateNote: [
-          {
+      if (mode === 'edit') {
+        const response = await chain('mutation')({
+          updateNote: [
+            {
+              id: note.id,
+              title: title,
+              content: content,
+            },
+            {
+              id: true,
+              title: true,
+              content: true,
+              tags: true,
+              updated_at: true,
+              created_at: true,
+            },
+          ],
+        });
+        const updatedNote = response.updateNote;
+        dispatch(
+          editNote({
             id: note.id,
-            title: title,
-            content: content,
-          },
-          {
-            id: true,
-            title: true,
-            content: true,
-            tags: true,
-            updated_at: true,
-            created_at: true,
-          },
-        ],
-      });
-      if (mode === 'create') {
-        onRequestClose();
+            note: updatedNote,
+          }),
+        );
+      } else {
+        assert(mode === 'create');
       }
-
       // displayToast(result.message || 'Note saved successfully!', 'success');
       console.log('toast success');
+      onRequestClose();
     } catch (error) {
       // displayToast(error.message || 'Error saving the note.', 'error');
       console.log('toast error', error);
