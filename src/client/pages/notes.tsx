@@ -8,6 +8,7 @@ import { NoteGrid } from '../components/notes-grid';
 import Note from '../app/types/note';
 import { setNotes } from '../store/notes-slice';
 import { wrapper } from '../store';
+import { useSelector } from 'react-redux';
 
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
@@ -49,6 +50,10 @@ const Notes: NextPage<Props['props']> = (props) => {
     window.gtag('event', 'notesOpened');
   }, []);
 
+  const notes: Record<string, Note> = useSelector((state: RootState) => {
+    return state.notes;
+  });
+
   return (
     <main className="flex flex-col min-h-screen bg-gray-200 dark:bg-gray-800 overflow-x-hidden antialiased">
       <Navbar />
@@ -59,7 +64,7 @@ const Notes: NextPage<Props['props']> = (props) => {
         </div>
       </div>
 
-      <NoteGrid />
+      <NoteGrid notes={notes} />
     </main>
   );
 };

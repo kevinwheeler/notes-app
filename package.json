@@ -46,6 +46,7 @@
     "class-validator": "^0.14.0",
     "commander": "^11.0.0",
     "cookie-parser": "^1.4.6",
+    "csstype": "^3.0.10",
     "express": "^4.17.1",
     "google-auth-library": "^8.7.0",
     "graphql": "^16.7.1",
