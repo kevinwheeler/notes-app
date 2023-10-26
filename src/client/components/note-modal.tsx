@@ -3,6 +3,7 @@ import Modal from 'react-modal';
 import { Chain } from '../app/types/zeus/index';
 import { useDispatch } from 'react-redux';
 import { editNote } from '../store/notes-slice';
+import { toast } from 'react-hot-toast';
 
 export const NoteModal = ({ isOpen, onRequestClose, note, mode }) => {
   const [title, setTitle] = useState(note.title || '');
@@ -12,8 +13,18 @@ export const NoteModal = ({ isOpen, onRequestClose, note, mode }) => {
 
   Modal.setAppElement('#__next');
 
+  const validateContent = () => {
+    return content.length >= 20 && content.length <= 300;
+  };
+
   const handleSave = async () => {
+    if (!validateContent()) {
+      toast.error('Note content must be between 20 and 300 characters.');
+      return;
+    }
+
     setIsLoading(true);
+
     try {
       const chain = Chain('/graphql');
       if (mode === 'edit') {
@@ -44,12 +55,10 @@ export const NoteModal = ({ isOpen, onRequestClose, note, mode }) => {
       } else {
         assert(mode === 'create');
       }
-      // displayToast(result.message || 'Note saved successfully!', 'success');
-      console.log('toast success');
+      toast.success('Note saved successfully!');
       onRequestClose();
     } catch (error) {
-      // displayToast(error.message || 'Error saving the note.', 'error');
-      console.log('toast error', error);
+      toast.error(error?.message || 'Error saving the note.');
     } finally {
       setIsLoading(false);
     }

@@ -6,6 +6,7 @@ import 'line-awesome/dist/line-awesome/css/line-awesome.min.css';
 import 'remixicon/fonts/remixicon.css';
 import { Provider } from 'react-redux';
 import { wrapper } from '../store';
+import { Toaster } from 'react-hot-toast';
 
 const App = ({ Component, ...rest }: AppProps) => {
   const { store, props } = wrapper.useWrappedStore(rest);
@@ -27,6 +28,7 @@ const App = ({ Component, ...rest }: AppProps) => {
       <Provider store={store}>
         <Component {...props.pageProps} />
       </Provider>
+      <Toaster />
     </>
   );
 };
