@@ -22,6 +22,6 @@ export class GoogleOauthController {
       httpOnly: true,
       sameSite: 'lax',
     });
-    return res.redirect('/profile');
+    return res.redirect('/notes');
   }
 }

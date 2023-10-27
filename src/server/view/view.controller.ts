@@ -1,9 +1,17 @@
-import { Controller, Get, Res, Req, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Res,
+  Req,
+  UseGuards,
+  UseInterceptors,
+} from '@nestjs/common';
 import { Request, Response } from 'express';
 import { parse } from 'url';
 import { JwtAuthGuard } from '../app/auth/jwt/jwt-auth.guard';
 
 import { ViewService } from './view.service';
+import { RedirectIfJwtAuthenticatedInterceptor } from '../app/auth/interceptors/redirect-if-jwt-authenticated';
 
 @Controller('/')
 export class ViewController {
@@ -16,10 +24,11 @@ export class ViewController {
       .render(req, res, parsedUrl.pathname, parsedUrl.query);
   }
 
+  @UseInterceptors(new RedirectIfJwtAuthenticatedInterceptor('/notes'))
   @Get('/')
   public async showHome(@Req() req: Request, @Res() res: Response) {
     const parsedUrl = parse(req.url, true);
-    const serverSideProps = { dataFromController: '123' };
+    const serverSideProps = {}; // leaving this as an example despite being empty
 
     await this.viewService.getNextServer().render(
       req,
