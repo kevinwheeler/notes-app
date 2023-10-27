@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import Note from '../app/types/note';
+import { Note } from '../app/types/types';
 import { HYDRATE } from 'next-redux-wrapper';
 import { createSelector } from 'reselect';
 
@@ -44,15 +44,29 @@ const getNotes = (state) => state.notes.data;
 const getsearchQuery = (state) => state.notes.searchQuery;
 export const getFilteredNotes = createSelector(
   [getNotes, getsearchQuery],
-  (notes, searchQuery) => {
-    if (!searchQuery) return Object.values(notes);
+  (notes: Record<string, Note>, searchQuery) => {
+    // If there's no search query, return the notes as they are
+    if (!searchQuery) return notes;
 
-    return Object.values(notes).filter(
+    // Filter notes based on the search query
+    const filteredNotesArray: Note[] = Object.values(notes).filter(
       (note: Note) =>
         note.title.includes(searchQuery) || note.content.includes(searchQuery),
     );
+
+    // Convert the filtered notes array back to an object
+    const filteredNotesObject: Record<string, Note> = filteredNotesArray.reduce(
+      (acc, note) => {
+        acc[note.id] = note;
+        return acc;
+      },
+      {} as Record<string, Note>,
+    );
+
+    return filteredNotesObject;
   },
 );
 
-export const { addNote, editNote, setNotesData } = notesSlice.actions;
+export const { addNote, editNote, setNotesData, setSearchQuery } =
+  notesSlice.actions;
 export default notesSlice.reducer;

@@ -2,7 +2,7 @@ import { Request } from 'express';
 
 type User = Request['user'];
 
-export default interface Note {
+export interface Note {
   id: number;
   title: string;
   content: string;
@@ -11,3 +11,12 @@ export default interface Note {
   created_at: Date;
   updated_at: Date;
 }
+
+export type NoteState = {
+  data: Record<number, Note>;
+  searchQuery: string;
+};
+
+export type RootState = {
+  notes: NoteState;
+};

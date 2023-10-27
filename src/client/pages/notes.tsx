@@ -5,10 +5,11 @@ import { Request } from 'express';
 import { typedQuery } from '../app/apollo-client';
 import Navbar from '../components/navbar';
 import { NoteGrid } from '../components/notes-grid';
-import Note from '../app/types/note';
-import { setNotesData } from '../store/notes-slice';
+import { Note } from '../app/types/types';
+import { getFilteredNotes, setNotesData } from '../store/notes-slice';
 import { wrapper } from '../store';
 import { useSelector } from 'react-redux';
+import { NotesSelector } from '../components/notes-selector';
 
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
@@ -46,13 +47,14 @@ export const getServerSideProps = wrapper.getServerSideProps(
 type Props = ExtractPromiseType<ReturnType<typeof getServerSideProps>>;
 
 const Notes: NextPage<Props['props']> = (props) => {
-  useEffect(() => {
-    window.gtag('event', 'notesOpened');
-  }, []);
+  // useEffect(() => {
+  //   window.gtag('event', 'notesOpened');
+  // }, []);
 
-  const notes: Record<string, Note> = useSelector((state: RootState) => {
-    return state.notes.data;
-  });
+  // const notes: Record<string, Note> = useSelector((state: RootState) => {
+  //   return state.notes.data;
+  // });
+  const notes: Record<string, Note> = useSelector(getFilteredNotes);
   // console.log('kmw notes = ', notes);
 
   return (
@@ -65,7 +67,13 @@ const Notes: NextPage<Props['props']> = (props) => {
         </div>
       </div>
 
-      <NoteGrid notes={notes} />
+      <section className="bg-gray-50 dark:bg-gray-900 mx-8 my-4 min-h-[5rem] p-6 flex flex-col rounded-lg">
+        <div className="flex justify-between">
+          <h2 className="text-3xl dark:text-white">Your Notes</h2>
+        </div>
+        <NotesSelector />
+        <NoteGrid notes={notes} />
+      </section>
     </main>
   );
 };

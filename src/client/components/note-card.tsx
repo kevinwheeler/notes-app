@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { NoteIcon } from './SVGs';
-import Note from '../app/types/note';
+import { Note } from '../app/types/types';
 import { NoteModal } from './note-modal';
 import { useSelector } from 'react-redux';
 
@@ -53,7 +53,7 @@ export function NoteCard({ noteId, color }: NoteCardProps) {
 
   return (
     <>
-      <div className="flex flex-col flex-1 p-5 gap-2 bg-white dark:bg-black dark:shadow-lg dark:shadow-white/50 rounded-xl font-roboto relative">
+      <div className="flex flex-col flex-1 p-5 gap-2 bg-white dark:bg-black dark:shadow-lg dark:shadow-white/50 rounded-xl font-roboto relative max-w-sm">
         <div className="flex justify-between items-center">
           <NoteIcon
             className={`border-${color} rounded-lg`}
