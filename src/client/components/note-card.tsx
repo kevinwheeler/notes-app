@@ -118,7 +118,6 @@ export function NoteCard({ noteId, color }: NoteCardProps) {
         onRequestClose={() => setIsModalOpen(false)}
         note={note}
         mode="edit"
-        // displayToast={displayToast}
       />
     </>
   );

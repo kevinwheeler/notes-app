@@ -2,10 +2,16 @@ import React, { useState } from 'react';
 import Modal from 'react-modal';
 import { Chain } from '../app/types/zeus/index';
 import { useDispatch } from 'react-redux';
-import { editNote } from '../store/notes-slice';
+import { createNote, editNote } from '../store/notes-slice';
 import { toast } from 'react-hot-toast';
+import assert from 'assert';
 
-export const NoteModal = ({ isOpen, onRequestClose, note, mode }) => {
+export const NoteModal = ({
+  isOpen,
+  onRequestClose,
+  note = { title: '', content: '' },
+  mode,
+}) => {
   const [title, setTitle] = useState(note.title || '');
   const [content, setContent] = useState(note.content || '');
   const [isLoading, setIsLoading] = useState(false);
@@ -53,7 +59,26 @@ export const NoteModal = ({ isOpen, onRequestClose, note, mode }) => {
           }),
         );
       } else {
-        assert(mode === 'create');
+        assert(mode === 'create', 'Error: Mode should be "create".');
+        const response = await chain('mutation')({
+          createNote: [
+            {
+              title: title,
+              content: content,
+              tags: [],
+            },
+            {
+              id: true,
+              title: true,
+              content: true,
+              tags: true,
+              updated_at: true,
+              created_at: true,
+            },
+          ],
+        });
+        const createdNote = response.createNote;
+        dispatch(createNote(createdNote));
       }
       toast.success('Note saved successfully!');
       onRequestClose();
@@ -68,7 +93,7 @@ export const NoteModal = ({ isOpen, onRequestClose, note, mode }) => {
     <Modal
       isOpen={isOpen}
       onRequestClose={onRequestClose}
-      className="bg-white dark:bg-gray-700 rounded-lg w-screen md:max-w-md"
+      className="bg-white dark:bg-gray-700 rounded-lg w-screen md:max-w-md focus-visible:outline-none"
       overlayClassName="fixed flex justify-center items-center p-4 inset-0 z-[1000] bg-gray-700/50"
     >
       <div className="px-6 py-6 lg:px-8">

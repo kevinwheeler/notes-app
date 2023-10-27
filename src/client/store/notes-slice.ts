@@ -12,7 +12,7 @@ const notesSlice = createSlice({
   name: 'notes',
   initialState,
   reducers: {
-    addNote: (state, action: PayloadAction<Note>) => {
+    createNote: (state, action: PayloadAction<Note>) => {
       state.data[action.payload.id] = action.payload;
     },
     editNote: (state, action: PayloadAction<{ id: number; note: Note }>) => {
@@ -67,6 +67,6 @@ export const getFilteredNotes = createSelector(
   },
 );
 
-export const { addNote, editNote, setNotesData, setSearchQuery } =
+export const { createNote, editNote, setNotesData, setSearchQuery } =
   notesSlice.actions;
 export default notesSlice.reducer;

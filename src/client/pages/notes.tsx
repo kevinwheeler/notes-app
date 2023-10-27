@@ -10,6 +10,7 @@ import { getFilteredNotes, setNotesData } from '../store/notes-slice';
 import { wrapper } from '../store';
 import { useSelector } from 'react-redux';
 import { NotesSelector } from '../components/notes-selector';
+import { NoteCreator } from '../components/note-creator';
 
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
@@ -51,21 +52,12 @@ const Notes: NextPage<Props['props']> = (props) => {
   //   window.gtag('event', 'notesOpened');
   // }, []);
 
-  // const notes: Record<string, Note> = useSelector((state: RootState) => {
-  //   return state.notes.data;
-  // });
   const notes: Record<string, Note> = useSelector(getFilteredNotes);
-  // console.log('kmw notes = ', notes);
 
   return (
     <main className="flex flex-col min-h-screen bg-gray-200 dark:bg-gray-800 overflow-x-hidden antialiased">
       <Navbar />
-      <div className="bg-gray-50 dark:bg-gray-900 mx-8 my-4 mt-24 min-h-[5rem] flex items-center rounded-lg">
-        <div className="ml-5 text-gray-500 hover:text-black dark:text-gray-300 dark:hover:text-white cursor-pointer">
-          <i className="las la-pencil-alt pr-2"></i>
-          <span className="ml-2">Write Your Note</span>
-        </div>
-      </div>
+      <NoteCreator />
 
       <section className="bg-gray-50 dark:bg-gray-900 mx-8 my-4 min-h-[5rem] p-6 flex flex-col rounded-lg">
         <div className="flex justify-between">

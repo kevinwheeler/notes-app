@@ -31,7 +31,7 @@ export function NoteGrid(props: NotesGridProps) {
   const shuffledColors = colors.sort(() => Math.random() - 0.5);
 
   return (
-    <div className="flex flex-wrap gap-4 mt-8 text-gray-500">
+    <div className="flex flex-wrap justify-center sm:justify-start gap-4 mt-8 text-gray-500">
       {Object.values(props.notes).map((note, index) => (
         <NoteCard
           key={note.id}
