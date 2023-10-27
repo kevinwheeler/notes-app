@@ -27,6 +27,8 @@ export function NoteGrid(props: NotesGridProps) {
     'after:bg-pink-500 text-pink-500 border-pink-500',
   ];
 
+  console.log('props.notes', props.notes);
+
   // Shuffle the colors array to get a randomized order
   const shuffledColors = colors.sort(() => Math.random() - 0.5);
 

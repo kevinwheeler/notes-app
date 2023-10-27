@@ -13,16 +13,13 @@ export function NoteCard({ noteId, color }: NoteCardProps) {
   const [isContextMenuVisible, setIsContextMenuVisible] = useState(false);
   const contextMenuRef = useRef(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const note: Note = useSelector((state: ReduxState) => state.notes[noteId]);
+  const note: Note = useSelector(
+    (state: ReduxState) => state.notes.data[noteId],
+  );
 
   const openEditModal = () => {
     setIsModalOpen(true);
     setIsContextMenuVisible(false); // Hide the context menu
-  };
-
-  // This is a placeholder function.
-  const displayToast = (message, type) => {
-    console.log(`${type.toUpperCase()}: ${message}`);
   };
 
   const handleClickOutside = (event) => {

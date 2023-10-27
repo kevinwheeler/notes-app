@@ -68,6 +68,7 @@
     "redux": "^4.2.1",
     "reflect-metadata": "^0.1.13",
     "remixicon": "^3.5.0",
+    "reselect": "^4.1.8",
     "rimraf": "^3.0.2",
     "rxjs": "^7.8.0",
     "sass": "^1.69.4",

@@ -6,7 +6,7 @@ import { typedQuery } from '../app/apollo-client';
 import Navbar from '../components/navbar';
 import { NoteGrid } from '../components/notes-grid';
 import Note from '../app/types/note';
-import { setNotes } from '../store/notes-slice';
+import { setNotesData } from '../store/notes-slice';
 import { wrapper } from '../store';
 import { useSelector } from 'react-redux';
 
@@ -34,7 +34,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
         return acc;
       }, {});
 
-      store.dispatch(setNotes(notesObject));
+      store.dispatch(setNotesData(notesObject));
 
       return {
         //TODO perhaps save user in a store instead
@@ -51,8 +51,9 @@ const Notes: NextPage<Props['props']> = (props) => {
   }, []);
 
   const notes: Record<string, Note> = useSelector((state: RootState) => {
-    return state.notes;
+    return state.notes.data;
   });
+  // console.log('kmw notes = ', notes);
 
   return (
     <main className="flex flex-col min-h-screen bg-gray-200 dark:bg-gray-800 overflow-x-hidden antialiased">
