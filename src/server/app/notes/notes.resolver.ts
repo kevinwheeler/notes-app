@@ -45,6 +45,7 @@ export class NotesResolver {
     @CurrentUser() user: User,
     @Args() createNoteArgs: CreateNoteArgs,
   ) {
+    console.log('user = ', user);
     return this.notesService.create({
       title: createNoteArgs.title,
       content: createNoteArgs.content,

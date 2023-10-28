@@ -6,7 +6,7 @@ services:
       context: .
     image: ${NESTJS_STARTER_IMAGE:-nestjs-starter:local}
     entrypoint: scripts/web-docker-entrypoint-dev.sh
-    command: yarn start:dev
+    command: yarn start:debug
     ports:
       - "3000:3000"
     depends_on:

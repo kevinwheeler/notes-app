@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Modal from 'react-modal';
 import { Chain } from '../app/types/zeus/index';
 import { useDispatch } from 'react-redux';
-import { createNote, editNote } from '../store/notes-slice';
+import { createNoteAsync, editNoteAsync } from '../store/notes-slice';
 import { toast } from 'react-hot-toast';
 import assert from 'assert';
 
@@ -17,7 +17,10 @@ export const NoteModal = ({
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
 
+  // probably add this.
+  // useEffect(() => {
   Modal.setAppElement('#__next');
+  // }, []);
 
   const validateContent = () => {
     return content.length >= 20 && content.length <= 300;
@@ -32,53 +35,21 @@ export const NoteModal = ({
     setIsLoading(true);
 
     try {
-      const chain = Chain('/graphql');
       if (mode === 'edit') {
-        const response = await chain('mutation')({
-          updateNote: [
-            {
-              id: note.id,
-              title: title,
-              content: content,
-            },
-            {
-              id: true,
-              title: true,
-              content: true,
-              tags: true,
-              updated_at: true,
-              created_at: true,
-            },
-          ],
-        });
-        const updatedNote = response.updateNote;
-        dispatch(
-          editNote({
-            id: note.id,
-            note: updatedNote,
-          }),
-        );
+        const updatedNotePayload = {
+          id: note.id,
+          title: title,
+          content: content,
+        };
+        await dispatch(editNoteAsync(updatedNotePayload));
       } else {
         assert(mode === 'create', 'Error: Mode should be "create".');
-        const response = await chain('mutation')({
-          createNote: [
-            {
-              title: title,
-              content: content,
-              tags: [],
-            },
-            {
-              id: true,
-              title: true,
-              content: true,
-              tags: true,
-              updated_at: true,
-              created_at: true,
-            },
-          ],
-        });
-        const createdNote = response.createNote;
-        dispatch(createNote(createdNote));
+        const createdNotePayload = {
+          title: title,
+          content: content,
+        };
+
+        await dispatch(createNoteAsync(createdNotePayload));
       }
       toast.success('Note saved successfully!');
       onRequestClose();

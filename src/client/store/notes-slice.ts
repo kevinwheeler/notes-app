@@ -1,27 +1,86 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Note } from '../app/types/types';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { Note, RootState } from '../app/types/types';
 import { HYDRATE } from 'next-redux-wrapper';
 import { createSelector } from 'reselect';
+import { Chain } from '../app/types/zeus';
+
+type CreateNoteArg = {
+  title: string;
+  content: string;
+};
+
+const createNoteAsync = createAsyncThunk<Note, CreateNoteArg>(
+  'notes/createNote',
+  async ({ title, content }) => {
+    const chain = Chain('/graphql');
+    const response = await chain('mutation')({
+      createNote: [
+        {
+          title: title,
+          content: content,
+          tags: [],
+        },
+        {
+          id: true,
+          title: true,
+          content: true,
+          tags: true,
+          updated_at: true,
+          created_at: true,
+        },
+      ],
+    });
+    return response.createNote as Note;
+  },
+);
+
+type EditNoteArg = CreateNoteArg & {
+  id: number;
+};
+
+// Asynchronous thunk for editing a note
+const editNoteAsync = createAsyncThunk<Note, EditNoteArg>(
+  'notes/editNote',
+  async ({ id, title, content }, thunkAPI) => {
+    const state = thunkAPI.getState() as RootState; // RootState is your store's root state type
+    // Ensure the note exists before attempting to edit
+    const currentNote = state.notes.data[id];
+    if (!currentNote || currentNote.id !== id) {
+      throw new Error('Invalid note ID');
+    }
+    const chain = Chain('/graphql');
+    const response = await chain('mutation')({
+      updateNote: [
+        {
+          id: id,
+          title: title,
+          content: content,
+        },
+        {
+          id: true,
+          title: true,
+          content: true,
+          tags: true,
+          updated_at: true,
+          created_at: true,
+        },
+      ],
+    });
+    return response.updateNote as Note;
+  },
+);
 
 const initialState = {
   data: {},
   searchQuery: '',
+  loading: false,
+  error: null,
 };
 
 const notesSlice = createSlice({
   name: 'notes',
   initialState,
   reducers: {
-    createNote: (state, action: PayloadAction<Note>) => {
-      state.data[action.payload.id] = action.payload;
-    },
-    editNote: (state, action: PayloadAction<{ id: number; note: Note }>) => {
-      const { id, note } = action.payload;
-      if (!state.data[id] || state.data[id].id !== id) {
-        throw new Error('Invalid note ID');
-      }
-      state.data[id] = note;
-    },
     setNotesData: (state, action: PayloadAction<Record<number, Note>>) => {
       state.data = action.payload;
     },
@@ -30,20 +89,48 @@ const notesSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(HYDRATE, (state, action: any) => {
-      return {
-        ...state,
-        data: { ...state.data, ...action.payload.notes.data },
-        searchQuery: action.payload.notes.searchQuery || state.searchQuery,
-      };
-    });
+    builder
+      .addCase(createNoteAsync.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(createNoteAsync.fulfilled, (state, action) => {
+        state.loading = false;
+        state.data[action.payload.id] = action.payload;
+      })
+      .addCase(createNoteAsync.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+        throw new Error(action.error.message);
+      })
+
+      .addCase(editNoteAsync.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(editNoteAsync.fulfilled, (state, action) => {
+        state.loading = false;
+        const note = action.payload;
+        state.data[note.id] = note;
+      })
+      .addCase(editNoteAsync.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+        throw new Error(action.error.message);
+      })
+
+      .addCase(HYDRATE, (state, action: any) => {
+        return {
+          ...state,
+          data: { ...state.data, ...action.payload.notes.data },
+          searchQuery: action.payload.notes.searchQuery || state.searchQuery,
+        };
+      });
   },
 });
 
 const getNotes = (state) => state.notes.data;
-const getsearchQuery = (state) => state.notes.searchQuery;
-export const getFilteredNotes = createSelector(
-  [getNotes, getsearchQuery],
+const getSearchQuery = (state) => state.notes.searchQuery;
+const getFilteredNotes = createSelector(
+  [getNotes, getSearchQuery],
   (notes: Record<string, Note>, searchQuery) => {
     // If there's no search query, return the notes as they are
     if (!searchQuery) return notes;
@@ -67,6 +154,7 @@ export const getFilteredNotes = createSelector(
   },
 );
 
-export const { createNote, editNote, setNotesData, setSearchQuery } =
-  notesSlice.actions;
+export const { setNotesData, setSearchQuery } = notesSlice.actions;
 export default notesSlice.reducer;
+
+export { getFilteredNotes, createNoteAsync, editNoteAsync };

@@ -21,8 +21,13 @@ export class RedirectIfJwtAuthenticatedInterceptor implements NestInterceptor {
         'jwt',
         { session: false, failWithError: true },
         (err, user, info) => {
+          if (err) {
+            observer.error(err);
+            return;
+          }
           if (user) {
             response.redirect(this.redirectPath);
+            observer.next(true); // Emit a value
             observer.complete();
             return;
           }
@@ -33,19 +38,7 @@ export class RedirectIfJwtAuthenticatedInterceptor implements NestInterceptor {
             () => observer.complete(),
           );
         },
-      )(request, response, (err) => {
-        // Important: Add these arguments to make passport work correctly.
-        if (err) {
-          observer.error(err);
-          return;
-        }
-        // Continue processing if passport doesn't authenticate.
-        next.handle().subscribe(
-          (data) => observer.next(data),
-          (err) => observer.error(err),
-          () => observer.complete(),
-        );
-      });
+      )(request, response);
     });
   }
 }
