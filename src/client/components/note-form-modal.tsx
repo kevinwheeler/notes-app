@@ -5,7 +5,7 @@ import { createNoteAsync, editNoteAsync } from '../store/notes-slice';
 import { toast } from 'react-hot-toast';
 import assert from 'assert';
 
-export const NoteModal = ({
+export const NoteFormModal = ({
   isOpen,
   onRequestClose,
   note = { title: '', content: '' },
@@ -44,6 +44,9 @@ export const NoteModal = ({
         };
 
         await dispatch(createNoteAsync(createdNotePayload));
+        //clear form
+        setTitle('');
+        setContent('');
       }
       toast.success('Note saved successfully!');
       onRequestClose();

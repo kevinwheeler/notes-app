@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { NoteIcon } from './SVGs';
 import { Note } from '../app/types/types';
-import { NoteModal } from './note-modal';
+import { NoteFormModal } from './note-form-modal';
 import { NoteDeleteModal } from './note-delete-modal';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
@@ -131,10 +131,10 @@ export function NoteCard({ noteId, color }: NoteCardProps) {
             </ul>
           </div>
         </div>
-        <div className="mt-2 text-2xl text-black dark:text-white group-hover:text-white">
+        <div className="mt-2 text-2xl text-black dark:text-white group-hover:text-white [overflow-wrap:break-word]">
           {note.title}
         </div>
-        <p className="text-gray-700 group-hover:text-white  tracking-wide">
+        <p className="text-gray-700 group-hover:text-white  tracking-wide [overflow-wrap:break-word]">
           {note.content}
         </p>
         <div className="mt-6 flex justify-end">
@@ -148,10 +148,10 @@ export function NoteCard({ noteId, color }: NoteCardProps) {
           </div>
         </div>
         <div
-          className={`after:absolute after:w-full after:h-1 after:bottom-0 after:bg-${color} transition-all  after:duration-700 duration-700 after:rounded-lg after:overflow-hidden after:-ml-5 after:opacity-100 after:translate-y-0 group-hover:after:opacity-0 group-hover:after:-translate-y-1`}
+          className={`after:absolute after:w-full after:h-1 after:bottom-0 after:bg-${color} transition-all  after:duration-700 duration-700 after:rounded-lg after:overflow-hidden after:-ml-5 after:opacity-100 after:translate-y-0 group-hover:after:opacity-0 group-hover:after:-translate-y-3`}
         ></div>
       </div>
-      <NoteModal
+      <NoteFormModal
         isOpen={isEditModalOpen}
         onRequestClose={() => setIsEditModalOpen(false)}
         note={note}

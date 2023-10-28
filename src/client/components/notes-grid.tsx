@@ -17,7 +17,7 @@ export function NoteGrid(props: NotesGridProps) {
     'pink-500',
     'orange-500',
   ];
-  // This is just to include all of the classes so that Tailwind JIT will include them
+  // This is so that Tailwind JIT will include all of these classes
   // in the final CSS bundle. It isn't actually unused like it seems.
   const colorClasses = [
     'after:bg-blue-500 hover:bg-blue-500 text-blue-500 border-blue-500',
@@ -30,13 +30,15 @@ export function NoteGrid(props: NotesGridProps) {
 
   return (
     <div className="flex flex-wrap justify-center sm:justify-start gap-4 mt-8 text-gray-500">
-      {Object.values(props.notes).map((note, index) => (
-        <NoteCard
-          key={note.id}
-          noteId={note.id}
-          color={colors[index % colors.length]}
-        />
-      ))}
+      {Object.keys(props.notes).length
+        ? Object.values(props.notes).map((note, index) => (
+            <NoteCard
+              key={note.id}
+              noteId={note.id}
+              color={colors[index % colors.length]}
+            />
+          ))
+        : "It's a fresh start! Create your first note to begin."}
     </div>
   );
 }
