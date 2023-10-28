@@ -8,12 +8,12 @@ wait_for()
   echo "$2:$3 available"
 }
 
-# yarn install
+yarn install
 
-# wait_for 10 db 5432
+wait_for 10 db 5432
 
-# yarn typeorm migration:run
+yarn typeorm migration:run
 
-# yarn console seed
+yarn console seed
 
 exec "$@"

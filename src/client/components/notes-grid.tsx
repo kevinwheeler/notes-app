@@ -15,6 +15,7 @@ export function NoteGrid(props: NotesGridProps) {
     'purple-500',
     'green-500',
     'pink-500',
+    'orange-500',
   ];
   // This is just to include all of the classes so that Tailwind JIT will include them
   // in the final CSS bundle. It isn't actually unused like it seems.
@@ -27,16 +28,13 @@ export function NoteGrid(props: NotesGridProps) {
     'after:bg-pink-500 text-pink-500 border-pink-500',
   ];
 
-  // Shuffle the colors array to get a randomized order
-  const shuffledColors = colors.sort(() => Math.random() - 0.5);
-
   return (
     <div className="flex flex-wrap justify-center sm:justify-start gap-4 mt-8 text-gray-500">
       {Object.values(props.notes).map((note, index) => (
         <NoteCard
           key={note.id}
           noteId={note.id}
-          color={shuffledColors[index % shuffledColors.length]}
+          color={colors[index % colors.length]}
         />
       ))}
     </div>
