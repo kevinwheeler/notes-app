@@ -54,6 +54,25 @@ export class NotesResolver {
     });
   }
 
+  @Mutation((_returns) => Boolean)
+  @UseGuards(GqlAuthGuard)
+  async deleteNote(
+    @CurrentUser() user: User,
+    @Args('id') id: number,
+  ): Promise<boolean> {
+    // Check if the note exists and belongs to the user before deleting
+    const existingNote = await this.notesService.findOne({
+      where: { id: +id, user: { id: user.id } },
+    });
+    if (!existingNote) {
+      throw new Error(
+        "Note not found or you don't have permission to delete it.",
+      );
+    }
+
+    return this.notesService.deleteOne(+id, user.id);
+  }
+
   @Mutation((_returns) => Note)
   @UseGuards(GqlAuthGuard)
   async updateNote(

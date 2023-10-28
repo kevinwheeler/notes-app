@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import Modal from 'react-modal';
-import { Chain } from '../app/types/zeus/index';
 import { useDispatch } from 'react-redux';
 import { createNoteAsync, editNoteAsync } from '../store/notes-slice';
 import { toast } from 'react-hot-toast';
@@ -16,11 +15,6 @@ export const NoteModal = ({
   const [content, setContent] = useState(note.content || '');
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
-
-  // probably add this.
-  // useEffect(() => {
-  Modal.setAppElement('#__next');
-  // }, []);
 
   const validateContent = () => {
     return content.length >= 20 && content.length <= 300;

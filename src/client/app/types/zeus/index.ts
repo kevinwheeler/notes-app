@@ -864,6 +864,7 @@ export type ValueTypes = {
 }>;
 	["Mutation"]: AliasType<{
 createNote?: [{	title: string | Variable<any, string>,	content: string | Variable<any, string>,	tags: Array<string> | Variable<any, string>},ValueTypes["Note"]],
+deleteNote?: [{	id: number | Variable<any, string>},boolean | `@${string}`],
 updateNote?: [{	id: number | Variable<any, string>,	title?: string | undefined | null | Variable<any, string>,	content?: string | undefined | null | Variable<any, string>,	tags?: Array<string> | undefined | null | Variable<any, string>},ValueTypes["Note"]],
 		__typename?: boolean | `@${string}`
 }>
@@ -901,6 +902,7 @@ export type ResolverInputTypes = {
 }>;
 	["Mutation"]: AliasType<{
 createNote?: [{	title: string,	content: string,	tags: Array<string>},ResolverInputTypes["Note"]],
+deleteNote?: [{	id: number},boolean | `@${string}`],
 updateNote?: [{	id: number,	title?: string | undefined | null,	content?: string | undefined | null,	tags?: Array<string> | undefined | null},ResolverInputTypes["Note"]],
 		__typename?: boolean | `@${string}`
 }>
@@ -935,6 +937,7 @@ export type ModelTypes = {
 };
 	["Mutation"]: {
 		createNote: ModelTypes["Note"],
+	deleteNote: boolean,
 	updateNote: ModelTypes["Note"]
 }
     }
@@ -975,6 +978,7 @@ export type GraphQLTypes = {
 	["Mutation"]: {
 	__typename: "Mutation",
 	createNote: GraphQLTypes["Note"],
+	deleteNote: boolean,
 	updateNote: GraphQLTypes["Note"]
 }
     }

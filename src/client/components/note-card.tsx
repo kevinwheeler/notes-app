@@ -2,7 +2,10 @@ import React, { useState, useEffect, useRef } from 'react';
 import { NoteIcon } from './SVGs';
 import { Note } from '../app/types/types';
 import { NoteModal } from './note-modal';
+import { NoteDeleteModal } from './note-delete-modal';
 import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { deleteNoteAsync } from '../store/notes-slice';
 
 interface NoteCardProps {
   noteId: number;
@@ -12,14 +15,31 @@ interface NoteCardProps {
 export function NoteCard({ noteId, color }: NoteCardProps) {
   const [isContextMenuVisible, setIsContextMenuVisible] = useState(false);
   const contextMenuRef = useRef(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const note: Note = useSelector(
     (state: ReduxState) => state.notes.data[noteId],
   );
 
+  const dispatch = useDispatch();
+
   const openEditModal = () => {
-    setIsModalOpen(true);
-    setIsContextMenuVisible(false); // Hide the context menu
+    setIsEditModalOpen(true);
+    setIsContextMenuVisible(false);
+  };
+
+  const openDeleteModal = () => {
+    setIsDeleteModalOpen(true);
+    setIsContextMenuVisible(false);
+  };
+
+  const closeDeleteModal = () => {
+    setIsDeleteModalOpen(false);
+  };
+
+  const confirmDelete = () => {
+    handleDeleteNote();
+    closeDeleteModal();
   };
 
   const handleClickOutside = (event) => {
@@ -29,6 +49,11 @@ export function NoteCard({ noteId, color }: NoteCardProps) {
     ) {
       setIsContextMenuVisible(false);
     }
+  };
+
+  const handleDeleteNote = () => {
+    dispatch(deleteNoteAsync({ id: noteId }));
+    setIsContextMenuVisible(false);
   };
 
   const handleKeyPress = (event) => {
@@ -84,7 +109,16 @@ export function NoteCard({ noteId, color }: NoteCardProps) {
                   <i className="las la-pen mr-3" />
                   Edit
                 </li>
-                <li className="cursor-pointer">
+                <li
+                  className="cursor-pointer"
+                  onClick={openDeleteModal}
+                  tabIndex={0}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      handleDeleteNote();
+                    }
+                  }}
+                >
                   <i className="las la-trash-alt mr-3" />
                   Delete
                 </li>
@@ -114,10 +148,15 @@ export function NoteCard({ noteId, color }: NoteCardProps) {
         ></div>
       </div>
       <NoteModal
-        isOpen={isModalOpen}
-        onRequestClose={() => setIsModalOpen(false)}
+        isOpen={isEditModalOpen}
+        onRequestClose={() => setIsEditModalOpen(false)}
         note={note}
         mode="edit"
+      />
+      <NoteDeleteModal
+        isOpen={isDeleteModalOpen}
+        noteId={note.id}
+        onRequestClose={() => setIsDeleteModalOpen(false)}
       />
     </>
   );

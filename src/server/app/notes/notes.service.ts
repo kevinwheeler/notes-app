@@ -15,6 +15,13 @@ export class NotesService {
     return this.notesRepository.save(note);
   }
 
+  async deleteOne(id: number, userId: number): Promise<boolean> {
+    const result = await this.notesRepository.delete({
+      id,
+    });
+    return result.affected > 0; // Return true if the note was deleted, false otherwise
+  }
+
   findOne(params: FindOneOptions<Note> = {}) {
     return this.notesRepository.findOne(
       Object.assign({ relations: ['user'] }, params),
@@ -38,8 +45,6 @@ export class NotesService {
         content: conditions.content,
         tags: conditions.tags,
         user: conditions.user,
-        // alias: conditions.alias,
-        // user: conditions.user,
       });
     }
 

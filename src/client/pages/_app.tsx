@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { AppProps } from 'next/app';
 import Script from 'next/script';
 import '../styles/globals.scss';
@@ -7,9 +7,13 @@ import 'remixicon/fonts/remixicon.css';
 import { Provider } from 'react-redux';
 import { wrapper } from '../store';
 import { Toaster } from 'react-hot-toast';
+import Modal from 'react-modal';
 
 const App = ({ Component, ...rest }: AppProps) => {
   const { store, props } = wrapper.useWrappedStore(rest);
+  useEffect(() => {
+    Modal.setAppElement('#__next');
+  }, []);
   return (
     <>
       <Script

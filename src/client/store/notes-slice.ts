@@ -34,6 +34,25 @@ const createNoteAsync = createAsyncThunk<Note, CreateNoteArg>(
   },
 );
 
+type DeleteNoteArg = {
+  id: number;
+};
+
+const deleteNoteAsync = createAsyncThunk<void, DeleteNoteArg>(
+  'notes/deleteNote',
+  async ({ id }) => {
+    const chain = Chain('/graphql');
+    await chain('mutation')({
+      deleteNote: [
+        {
+          id: id,
+        },
+        true,
+      ],
+    });
+  },
+);
+
 type EditNoteArg = CreateNoteArg & {
   id: number;
 };
@@ -103,6 +122,19 @@ const notesSlice = createSlice({
         throw new Error(action.error.message);
       })
 
+      .addCase(deleteNoteAsync.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(deleteNoteAsync.fulfilled, (state, action) => {
+        state.loading = false;
+        delete state.data[action.meta.arg.id];
+      })
+      .addCase(deleteNoteAsync.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+        throw new Error(action.error.message);
+      })
+
       .addCase(editNoteAsync.pending, (state) => {
         state.loading = true;
       })
@@ -157,4 +189,4 @@ const getFilteredNotes = createSelector(
 export const { setNotesData, setSearchQuery } = notesSlice.actions;
 export default notesSlice.reducer;
 
-export { getFilteredNotes, createNoteAsync, editNoteAsync };
+export { getFilteredNotes, createNoteAsync, deleteNoteAsync, editNoteAsync };
