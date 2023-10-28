@@ -2,7 +2,7 @@ import React from 'react';
 
 export function NoteIcon(props) {
   return (
-    <div className={`border p-2 ${props.className}`}>
+    <div className={`border p-2 ${props.className}`} aria-hidden="true">
       <svg
         width="1.5rem"
         height="1.5rem"

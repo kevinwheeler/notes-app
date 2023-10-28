@@ -6,7 +6,6 @@ import { RootState } from '../app/types/types';
 export function SearchBar() {
   const dispatch = useDispatch();
 
-  // Get the current searchQuery from Redux store
   const searchQuery = useSelector(
     (state: RootState) => state.notes.searchQuery,
   );
@@ -17,14 +16,15 @@ export function SearchBar() {
   };
 
   return (
-    <div className="relative">
+    <section className="relative">
       <input
-        type="text"
-        id="search-input"
-        value={searchQuery} // Control the input value with Redux state
-        onChange={handleInputChange}
+        aria-label="Search Notes"
         className="transition-all duration-300 ease-in-out w-0 h-10 pl-10 pr-3 py-2 border rounded-full focus:outline-none focus:w-56 dark:bg-gray-700 dark:text-white"
+        id="search-input"
+        onChange={handleInputChange}
         placeholder="Search..."
+        type="search"
+        value={searchQuery}
       />
       <label htmlFor="search-input" className="absolute top-0 left-0 mt-3 ml-3">
         <svg
@@ -43,7 +43,6 @@ export function SearchBar() {
           ></path>
         </svg>
       </label>
-      {/* ... rest of the component */}
-    </div>
+    </section>
   );
 }

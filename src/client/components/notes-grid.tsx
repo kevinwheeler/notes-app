@@ -29,7 +29,10 @@ export function NoteGrid(props: NotesGridProps) {
   ];
 
   return (
-    <div className="flex flex-wrap justify-center sm:justify-start gap-4 mt-8 text-gray-500">
+    <section
+      className="flex flex-wrap justify-center sm:justify-start gap-4 mt-8 text-gray-500"
+      aria-label="Notes List"
+    >
       {Object.keys(props.notes).length
         ? Object.values(props.notes).map((note, index) => (
             <NoteCard
@@ -39,6 +42,6 @@ export function NoteGrid(props: NotesGridProps) {
             />
           ))
         : "It's a fresh start! Create your first note to begin."}
-    </div>
+    </section>
   );
 }

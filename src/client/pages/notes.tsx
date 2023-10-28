@@ -11,6 +11,7 @@ import { wrapper } from '../store';
 import { useSelector } from 'react-redux';
 import { NotesSelector } from '../components/notes-selector';
 import { NoteCreator } from '../components/note-creator';
+import Head from 'next/head';
 
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
@@ -55,18 +56,27 @@ const Notes: NextPage<Props['props']> = (props) => {
   const notes: Record<string, Note> = useSelector(getFilteredNotes);
 
   return (
-    <main className="flex flex-col min-h-screen bg-gray-200 dark:bg-gray-800 overflow-x-hidden antialiased">
-      <Navbar />
-      <NoteCreator />
+    <>
+      <Head>
+        <title>Notes App</title>
+        <meta
+          name="description"
+          content="Notes page for viewing, creating, editing, and deleting notes."
+        />
+      </Head>
+      <main className="flex flex-col min-h-screen bg-gray-200 dark:bg-gray-800 overflow-x-hidden antialiased">
+        <Navbar />
+        <NoteCreator />
 
-      <section className="bg-gray-50 dark:bg-gray-900 mx-8 my-4 min-h-[5rem] p-6 flex flex-col rounded-lg">
-        <div className="flex justify-between">
-          <h2 className="text-3xl dark:text-white">Your Notes</h2>
-        </div>
-        <NotesSelector />
-        <NoteGrid notes={notes} />
-      </section>
-    </main>
+        <section className="bg-gray-50 dark:bg-gray-900 mx-8 my-4 min-h-[5rem] p-6 flex flex-col rounded-lg">
+          <div className="flex justify-between">
+            <h1 className="text-3xl dark:text-white">Your Notes</h1>
+          </div>
+          <NotesSelector />
+          <NoteGrid notes={notes} />
+        </section>
+      </main>
+    </>
   );
 };
 
