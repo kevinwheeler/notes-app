@@ -20,12 +20,12 @@ export function NoteGrid(props: NotesGridProps) {
   // This is just to include all of the classes so that Tailwind JIT will include them
   // in the final CSS bundle. It isn't actually unused like it seems.
   const colorClasses = [
-    'after:bg-blue-500 text-blue-500 border-blue-500',
-    'after:bg-teal-500 text-teal-500 border-teal-500',
-    'after:bg-yellow-500 text-yellow-500 border-yellow-500',
-    'after:bg-purple-500 text-purple-500 border-purple-500',
-    'after:bg-green-500 text-green-500 border-green-500',
-    'after:bg-pink-500 text-pink-500 border-pink-500',
+    'after:bg-blue-500 hover:bg-blue-500 text-blue-500 border-blue-500',
+    'after:bg-teal-500 hover:bg-teal-500 text-teal-500 border-teal-500',
+    'after:bg-yellow-500 hover:bg-yellow-500 text-yellow-500 border-yellow-500',
+    'after:bg-purple-500 hover:bg-purple-500 text-purple-500 border-purple-500',
+    'after:bg-green-500 hover:bg-green-500 text-green-500 border-green-500',
+    'after:bg-pink-500 hover:bg-pink-500 text-pink-500 border-pink-500',
   ];
 
   return (

@@ -37,11 +37,6 @@ export function NoteCard({ noteId, color }: NoteCardProps) {
     setIsDeleteModalOpen(false);
   };
 
-  const confirmDelete = () => {
-    handleDeleteNote();
-    closeDeleteModal();
-  };
-
   const handleClickOutside = (event) => {
     if (
       contextMenuRef.current &&
@@ -78,73 +73,82 @@ export function NoteCard({ noteId, color }: NoteCardProps) {
 
   return (
     <>
-      <div className="flex flex-col flex-1 p-5 gap-2 bg-white dark:bg-black dark:shadow-lg dark:shadow-white/50 rounded-xl font-roboto relative max-w-sm">
+      <div
+        className={`flex flex-col flex-1 p-5 gap-2 bg-white dark:bg-black dark:shadow-lg dark:shadow-white/50 rounded-xl font-roboto relative max-w-sm group hover:bg-${color} transition-all duration-700`}
+      >
         <div className="flex justify-between items-center">
           <NoteIcon
-            className={`border-${color} rounded-lg`}
-            pathClasses={`text-${color}`}
+            className={`border-${color} group-hover:border-white transition-all duration-700 rounded-lg`}
+            pathClasses={`text-${color} group-hover:text-white transition-all duration-700`}
           />
           <div className="relative" ref={contextMenuRef}>
             <i
-              className="ri-more-fill text-2xl cursor-pointer"
+              className="ri-more-fill text-2xl group-hover:text-white cursor-pointer"
               onClick={toggleContextMenu}
             ></i>
             {/* view, edit, delete box */}
-            {isContextMenuVisible && (
-              <ul className="absolute shadow-lg shadow-black/50 dark:shadow-white/50 rounded-lg justify-center flex flex-col w-36 right-0 bg-white dark:bg-black p-2">
-                <li className="cursor-pointer">
-                  <i className="las la-eye mr-3" />
-                  View
-                </li>
-                <li
-                  className="cursor-pointer"
-                  onClick={openEditModal}
-                  tabIndex={0}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter') {
-                      openEditModal();
-                    }
-                  }}
-                >
-                  <i className="las la-pen mr-3" />
-                  Edit
-                </li>
-                <li
-                  className="cursor-pointer"
-                  onClick={openDeleteModal}
-                  tabIndex={0}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter') {
-                      handleDeleteNote();
-                    }
-                  }}
-                >
-                  <i className="las la-trash-alt mr-3" />
-                  Delete
-                </li>
-                <li className="cursor-pointer">
-                  <i className="las la-thumbtack mr-3"></i>
-                  Pin
-                </li>
-              </ul>
-            )}
+            <ul
+              className={`absolute shadow-lg z-20 shadow-black/50 dark:shadow-white/50 rounded-lg justify-center flex flex-col w-36 right-0 bg-white dark:bg-black p-2 transform translate-y-0 opacity-100 transition-all duration-300 ease-in-out ${
+                isContextMenuVisible
+                  ? ''
+                  : 'invisible -translate-y-10 opacity-0'
+              }`}
+            >
+              {/* <li className="cursor-pointer">
+                <i className="las la-eye mr-3" />
+                View
+              </li> */}
+              <li
+                className="cursor-pointer"
+                onClick={openEditModal}
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    openEditModal();
+                  }
+                }}
+              >
+                <i className="las la-pen mr-3" />
+                Edit
+              </li>
+              <li
+                className="cursor-pointer"
+                onClick={openDeleteModal}
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    handleDeleteNote();
+                  }
+                }}
+              >
+                <i className="las la-trash-alt mr-3" />
+                Delete
+              </li>
+              {/* <li className="cursor-pointer">
+                <i className="las la-thumbtack mr-3"></i>
+                Pin
+              </li> */}
+            </ul>
           </div>
         </div>
-        <div className="mt-2 text-2xl text-black dark:text-white">
+        <div className="mt-2 text-2xl text-black dark:text-white group-hover:text-white">
           {note.title}
         </div>
-        <p className="text-gray-500  tracking-wide">{note.content}</p>
+        <p className="text-gray-700 group-hover:text-white  tracking-wide">
+          {note.content}
+        </p>
         <div className="mt-6 flex justify-end">
-          <div className="text-black dark:text-white">
-            <i className={`las la-calendar mr-2 text-2xl text-${color}`}></i>
+          <div className="text-black dark:text-white group-hover:text-white">
+            <i
+              className={`las la-calendar mr-2 text-2xl text-${color} group-hover:text-white transition-all duration-700`}
+            ></i>
             <span className="align-top">
               {new Date(note.created_at).toLocaleDateString()}
             </span>
           </div>
         </div>
-        {/* If we have time, we'll animate this sliding and fading out when we highlight the note upon hover. This is why we didn't just use a simple bottom border */}
         <div
-          className={`after:absolute after:w-full after:h-1 after:bottom-0 after:bg-${color} after:rounded-lg after:overflow-hidden after:-ml-5`}
+          className={`after:absolute after:w-full after:h-1 after:bottom-0 after:bg-${color} transition-all  after:duration-700 duration-700 after:rounded-lg after:overflow-hidden after:-ml-5 after:opacity-100 after:translate-y-0 group-hover:after:opacity-0 group-hover:after:-translate-y-1`}
         ></div>
       </div>
       <NoteModal
