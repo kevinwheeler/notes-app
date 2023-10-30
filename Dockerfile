@@ -2,5 +2,7 @@ FROM node:18.10.0-alpine
 
 WORKDIR /app
 
-ENTRYPOINT ["scripts/web-docker-entrypoint-dev.sh"]
+COPY package.json yarn.lock ./
+RUN yarn install
 
+ENTRYPOINT ["scripts/web-docker-entrypoint-dev.sh"]
