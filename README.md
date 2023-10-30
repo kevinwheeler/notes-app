@@ -2,14 +2,13 @@ __GitHub Repo:__ https://github.com/kevinwheeler/notes-app
 __*Live site__ https://notes-app.kevinwheeler.net  
 *You will have to login. I didn’t want users to be able to pollute my homepage with potentially malicious notes. You will need a Google account to login through Google.
 
-To run locally:
-`cp .env.example .env`
+To run locally:  
+`cp .env.example .env`  
 
 Edit .env and fill in the following OAUTH credentials. ChatGPT can walk you through generating them. If you are with the company who I am in the job application process with, I included my own credentials that you can use. They are included in the attachment I included with my project submission.  
-OAUTH_GOOGLE_ID=  
-OAUTH_GOOGLE_SECRET=
 
-run `docker compose up` from the project root.
+OAUTH_GOOGLE_ID=  
+OAUTH_GOOGLE_SECRET=  
 
 Have Docker installed and run `docker compose up` in the project root directory.
 
