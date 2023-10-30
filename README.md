@@ -13,7 +13,7 @@ OAUTH_GOOGLE_SECRET=
 Have Docker installed and run `docker compose up` in the project root directory.
 
 # Tech:
-Docker, AWS Elastic Container Service, AWS RDS PostgreSQL database, NestJS, Next.js (Server-Side Rendering), React, TypeScript, Tailwind, Prettier + ESLint + Prettier, GraphQL, TypeORM, Setup with Jest and Cypress for testing and “.github/workflows/ci.yml” for continuous integration, but I didn’t get around to implementing tests and CI.
+Docker, AWS Elastic Container Service, AWS RDS PostgreSQL database, NestJS, Next.js (Server-Side Rendering), React, TypeScript, Tailwind, ESLint + Prettier, GraphQL, TypeORM, Setup with Jest and Cypress for testing and “.github/workflows/ci.yml” for continuous integration, but I didn’t get around to implementing tests and CI.
 
 Honestly the reason I chose this stack is I wanted to gain experience with it. I hadn’t used NestJS, Next.js, GraphQL, AWS ECS, and other minor technologies (like TypeORM, etc) before, and obviously not this starter-kit before either. I guess this can be looked at as a bad thing or a good thing. It does show experience that I lacked, but it also shows that I can pick up lots of new technologies and a new codebase quickly, and I can then deliver a simple app in three weeks with decent infrastructure features and an aesthetic UI while also taking time to learn along the way.
 
